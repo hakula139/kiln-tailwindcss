@@ -16,4 +16,4 @@ git push origin vX.Y.Z
 
 The `release.yml` workflow checks that the tag matches the package version, runs the command tests, and publishes through npm's GitHub OIDC trusted publisher. Stable versions use `latest`, and prereleases use `next`. After npm publication succeeds, the same workflow creates a GitHub release with generated notes.
 
-Configure the trusted publisher for `@kiln-ssg/tailwindcss` to allow `hakula139/kiln-tailwindcss` through `release.yml` before the first release from this repository. Changing repository metadata requires a new package version. npm versions are immutable, so preserve `0.1.0` and use the prepared `0.1.1` version for the repository migration. Rerun only failed jobs, and fix an already published package with a new version.
+Configure the trusted publisher for `@kiln-ssg/tailwindcss` to allow `hakula139/kiln-tailwindcss` through `release.yml`. npm versions are immutable. Rerun only failed jobs, and fix an already published package with a new version.

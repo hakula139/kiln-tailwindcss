@@ -1,4 +1,8 @@
 package-lock.json
 flake.lock
+.agents/plans/
+.claude/
+.direnv/
 node_modules/
 result
+result-*

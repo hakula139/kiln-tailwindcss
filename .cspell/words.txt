@@ -1,0 +1,11 @@
+cachix
+direnv
+dontNpmBuild
+hakula
+nixfmt
+nixos
+nixpkgs
+numtide
+pkgs
+pname
+statix

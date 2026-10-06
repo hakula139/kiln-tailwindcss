@@ -20,6 +20,6 @@ export default [
     },
   },
   {
-    ignores: ['.claude/', '.direnv/', 'node_modules/', 'target/'],
+    ignores: ['.agents/plans/', '.claude/', '.direnv/', 'node_modules/'],
   },
 ];

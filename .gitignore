@@ -1,5 +1,25 @@
+# Package archives
+*.tgz
+
+# Dependencies
+node_modules/
+
+# Nix
 .direnv/
 .pre-commit-config.yaml
-node_modules/
 result
-*.tgz
+result-*
+
+# OS files
+.DS_Store
+
+# Environment
+.env
+.env.local
+
+# Editor / assistant local settings
+.agents/plans
+.claude/agent-memory-local
+.claude/plans
+.claude/settings.local.json
+.claude/worktrees
