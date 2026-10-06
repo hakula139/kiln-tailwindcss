@@ -39,6 +39,6 @@ nix flake check
 nix build .#kiln-tailwindcss
 ```
 
-The flake exposes `packages.<system>.default` and `packages.<system>.kiln-tailwindcss`. Node tests exercise the command through child processes with temporary site fixtures. Nix builds run the same command tests before packaging.
+The flake exposes `packages.<system>.default` and `packages.<system>.kiln-tailwindcss`.
 
-See [RELEASING.md](RELEASING.md) for independent npm releases. This repository preserves the processor's history from kiln's former `packages/css` directory. The published `0.1.0` package remains unchanged.
+See [RELEASING.md](RELEASING.md) for independent npm releases.
