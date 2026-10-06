@@ -2,10 +2,12 @@ cachix
 direnv
 dontNpmBuild
 hakula
+katex
 nixfmt
 nixos
 nixpkgs
 numtide
 pkgs
 pname
+smol
 statix
