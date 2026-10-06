@@ -1,0 +1,5 @@
+.direnv/
+.pre-commit-config.yaml
+node_modules/
+result
+*.tgz

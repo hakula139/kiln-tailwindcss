@@ -1,0 +1,4 @@
+package-lock.json
+flake.lock
+node_modules/
+result

@@ -1,0 +1,31 @@
+{
+  "version": "0.2",
+  "language": "en,en-GB",
+  "useGitignore": true,
+  "allowCompoundWords": true,
+  "words": [
+    "cachix",
+    "deadnix",
+    "devShells",
+    "direnv",
+    "dont",
+    "fileset",
+    "flake",
+    "globals",
+    "Hakula",
+    "idempotent",
+    "minifier",
+    "nixfmt",
+    "nixos",
+    "nixpkgs",
+    "numtide",
+    "oidc",
+    "outfile",
+    "pkgs",
+    "pname",
+    "statix",
+    "tailwindcss",
+    "untracked"
+  ],
+  "ignorePaths": ["flake.lock", "package-lock.json"]
+}

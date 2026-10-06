@@ -1,16 +1,15 @@
 {
   "name": "@kiln-ssg/tailwindcss",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tailwind CSS processor for kiln static sites",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hakula139/kiln.git",
-    "directory": "packages/css"
+    "url": "https://github.com/hakula139/kiln-tailwindcss.git"
   },
-  "homepage": "https://github.com/hakula139/kiln",
+  "homepage": "https://github.com/hakula139/kiln-tailwindcss",
   "bugs": {
-    "url": "https://github.com/hakula139/kiln/issues"
+    "url": "https://github.com/hakula139/kiln-tailwindcss/issues"
   },
   "type": "module",
   "bin": {
@@ -29,5 +28,24 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "scripts": {
+    "format": "npm run format:prettier && npm run format:markdown",
+    "format:markdown": "dprint check",
+    "format:prettier": "prettier --check \"**/*.{json,mjs}\"",
+    "lint": "npm run lint:md && npm run lint:js",
+    "lint:js": "eslint .",
+    "lint:md": "markdownlint-cli2 \"*.md\"",
+    "spellcheck": "cspell --no-progress \"**/*\"",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "cspell": "^10.3.4",
+    "dprint": "^0.57.4",
+    "eslint": "^10.11.0",
+    "globals": "^17.12.0",
+    "markdownlint-cli2": "^0.23.3",
+    "prettier": "^3.9.9"
   }
 }

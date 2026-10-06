@@ -1,6 +1,7 @@
 {
   buildNpmPackage,
   lib,
+  nodejs,
 }:
 
 let
@@ -9,6 +10,7 @@ in
 buildNpmPackage {
   pname = "kiln-tailwindcss";
   inherit (package) version;
+  inherit nodejs;
 
   src = lib.fileset.toSource {
     root = ./.;
@@ -18,14 +20,21 @@ buildNpmPackage {
       ./compiler.mjs
       ./package.json
       ./package-lock.json
+      ./test
     ];
   };
-  npmDepsHash = "sha256-ZvB2WQFSB5OWEwjLSEMvAnFAjuppyLt+AC6nvHSBjJY=";
+  npmDepsHash = "sha256-ee9NS+OaXusAQomhGT5P5KVXi8wfe+FIDE1xrT9Fwf4=";
   dontNpmBuild = true;
+  doCheck = true;
+  checkPhase = ''
+    runHook preCheck
+    npm test
+    runHook postCheck
+  '';
 
   meta = {
     description = "Tailwind CSS compiler for kiln";
-    homepage = "https://github.com/hakula139/kiln";
+    homepage = "https://github.com/hakula139/kiln-tailwindcss";
     license = lib.licenses.mit;
     mainProgram = "kiln-tailwindcss";
   };

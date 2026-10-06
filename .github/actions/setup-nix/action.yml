@@ -1,0 +1,17 @@
+name: Setup Nix
+description: Install Nix with sandboxing and read-only access to the public build cache
+
+runs:
+  using: composite
+  steps:
+    - name: Install Nix
+      uses: cachix/install-nix-action@v31
+      with:
+        extra_nix_config: |
+          sandbox = true
+          sandbox-fallback = false
+    - name: Setup Cachix
+      uses: cachix/cachix-action@v17
+      with:
+        name: hakula
+        skipPush: true
