@@ -11,5 +11,5 @@
     }
   ],
   "dictionaries": ["project-words"],
-  "ignorePaths": ["flake.lock", "package-lock.json"]
+  "ignorePaths": ["**/.git/**", "flake.lock", "package-lock.json"]
 }
