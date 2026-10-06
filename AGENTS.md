@@ -1,11 +1,31 @@
-# AGENTS.md
+# AGENTS.md: kiln-tailwindcss
 
-This repository owns the `@kiln-ssg/tailwindcss` npm package and `kiln-tailwindcss` command. Preserve the command's one-input-file, stdout-CSS, nonzero-error contract with kiln.
+This repository owns the `@kiln-ssg/tailwindcss` npm package and the `kiln-tailwindcss` command consumed by [kiln](https://github.com/hakula139/kiln).
 
-Follow the global instructions and load `git-workflow` before commits, pushes, PR updates, or approved merges. Keep independent work in isolated worktrees. Do not publish npm versions or create release tags without an explicit release request.
+## Compiler contract
 
-Use Node's built-in test runner. Group command scenarios by successful behavior, variants, and errors. Keep fixtures temporary, verify emitted CSS and failures, and place helpers after their callers. Use the existing formatting and lint configurations. Markdown paragraphs are not hard-wrapped.
+The command accepts one UTF-8 stylesheet and emits compiled CSS on stdout. Keep diagnostics on stderr and compilation failures nonzero so kiln can capture the output and propagate failures. Imports and plugins must resolve from both the input stylesheet's directory and the processor's installed dependencies.
 
-Versions are independent of kiln. Release tags use `vX.Y.Z`, and the single `release.yml` workflow owns npm publication and GitHub releases. Assign PRs to `hakula139`, use `enhancement` for features and `bug` for fixes, and use `## Summary` followed by `## Test plan` with a contiguous verification checklist.
+Kiln supplies generated inputs containing shared stylesheet references and Tailwind source declarations. Verify changes against temporary site fixtures outside this repository so package-local dependencies do not hide resolution failures.
 
-Verify changes with `npm test`, `npm run format`, `npm run lint`, `npm run spellcheck`, `nix flake check`, and `nix build .#kiln-tailwindcss`. Changes to npm dependencies also require refreshing `npmDepsHash` in `default.nix`.
+## Tests
+
+Use Node's built-in test runner and exercise the command through child processes. Group scenarios by successful compilation, source and plugin variants, then failures. Assert emitted CSS and diagnostic behavior, and keep fixture and invocation helpers after the scenarios that use them.
+
+## Dependencies and packaging
+
+Pin runtime dependencies in `package.json`. Refresh `package-lock.json` and `npmDepsHash` in `default.nix` together when dependencies change. Keep the npm `files` list and Nix source fileset aligned with runtime additions, and include command fixtures in the Nix source so package builds can run the tests.
+
+Add project spellings to `.cspell/words.txt`, one per line in alphabetical order.
+
+## Verification
+
+Run the development checks in [README.md](README.md). Node-side pre-commit hooks skip execution when `node_modules/` is absent, including in the Nix sandbox, so run the npm checks directly. Nix package builds run command tests before installation.
+
+## Releases
+
+The package is versioned independently of kiln. Follow [RELEASING.md](RELEASING.md) for dependency hashes, release tags, and trusted publisher setup.
+
+## Pull requests
+
+Assign pull requests to `hakula139`. Use `enhancement` for features and `bug` for fixes.
