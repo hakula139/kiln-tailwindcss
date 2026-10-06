@@ -1,6 +1,6 @@
 {
   "name": "@kiln-ssg/tailwindcss",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Tailwind CSS processor for kiln static sites",
   "license": "MIT",
   "repository": {
