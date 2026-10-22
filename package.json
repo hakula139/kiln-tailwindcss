@@ -32,7 +32,7 @@
   "scripts": {
     "format": "npm run format:prettier && npm run format:markdown",
     "format:markdown": "dprint check",
-    "format:prettier": "prettier --check \"**/*.{json,mjs}\"",
+    "format:prettier": "prettier --check .",
     "lint": "npm run lint:md && npm run lint:js",
     "lint:js": "eslint .",
     "lint:md": "markdownlint-cli2 \"*.md\"",
@@ -45,13 +45,10 @@
     "dprint": "^0.57.4",
     "eslint": "^10.11.0",
     "globals": "^17.12.0",
-    "markdownlint-cli2": "^0.23.3",
+    "markdownlint-cli2": "^0.24.0",
     "prettier": "^3.9.9"
   },
   "overrides": {
-    "markdownlint-cli2": {
-      "smol-toml": "1.9.0"
-    },
     "micromark-extension-math": {
       "katex": "0.19.0"
     }
