@@ -55,7 +55,6 @@
             prettier = {
               enable = true;
               entry = nodeHook "prettier-write" "prettier --write --ignore-unknown";
-              files = "\\.(json|mjs)$";
             };
             dprint = {
               enable = true;

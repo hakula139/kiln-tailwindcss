@@ -9,5 +9,4 @@ nixpkgs
 numtide
 pkgs
 pname
-smol
 statix
