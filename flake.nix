@@ -21,14 +21,14 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
-        processor = pkgs.callPackage ./default.nix { nodejs = pkgs.nodejs_24; };
+        processor = pkgs.callPackage ./default.nix { nodejs = pkgs.nodejs_26; };
 
         nodeHook =
           name: command:
           let
             wrapper = pkgs.writeShellApplication {
               inherit name;
-              runtimeInputs = [ pkgs.nodejs_24 ];
+              runtimeInputs = [ pkgs.nodejs_26 ];
               text = ''
                 if [ ! -d node_modules ]; then
                   exit 0
@@ -86,7 +86,7 @@
         };
         devShells.default = pkgs.mkShell {
           packages = preCommitCheck.enabledPackages ++ [
-            pkgs.nodejs_24
+            pkgs.nodejs_26
             pkgs.prefetch-npm-deps
           ];
           inherit (preCommitCheck) shellHook;
