@@ -42,6 +42,65 @@ jobs:
       - name: Test command
         run: npm test
 
+      - name: Pack npm package
+        run: |
+          mkdir "$RUNNER_TEMP/npm-package"
+          npm pack --pack-destination "$RUNNER_TEMP/npm-package"
+
+      - name: Upload npm package
+        uses: actions/upload-artifact@v7
+        with:
+          name: npm-package
+          path: ${{ runner.temp }}/npm-package/*.tgz
+          if-no-files-found: error
+
+  test-npm:
+    name: Test npm (Node ${{ matrix.node }})
+    needs: node-check
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 26]
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Download npm package
+        uses: actions/download-artifact@v8
+        with:
+          name: npm-package
+          path: ${{ runner.temp }}/npm-package
+
+      - name: Install and run package
+        shell: bash
+        run: |
+          root="$(mktemp -d)"
+          trap 'rm -rf "$root"' EXIT
+          mkdir "$root/consumer" "$root/site"
+          cd "$root/consumer"
+
+          npm install --no-audit --no-fund "$RUNNER_TEMP"/npm-package/*.tgz
+          npm ci --omit=dev --no-audit --no-fund
+
+          printf '%s\n' '@import "tailwindcss" source(none); @plugin "@tailwindcss/typography"; @source inline("flex prose");' > "$root/site/input.css"
+          NODE_PATH='' node_modules/.bin/kiln-tailwindcss "$root/site/input.css" > "$root/site/output.css" 2> "$root/site/diagnostics.txt"
+          test ! -s "$root/site/diagnostics.txt"
+
+          cd "$root/site"
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import { readFile } from 'node:fs/promises';
+
+          const css = await readFile('output.css', 'utf8');
+
+          assert.match(css, /\.flex\s*\{\s*display: flex;/);
+          assert.match(css, /\.prose\s*\{/);
+          assert.match(css, /max-width: 65ch/);
+          NODE
+
   flake-check:
     name: Nix Flake Check
     runs-on: ubuntu-latest
