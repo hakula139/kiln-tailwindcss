@@ -23,8 +23,7 @@ buildNpmPackage {
       ./test
     ];
   };
-  npmDepsFetcherVersion = 2;
-  npmDepsHash = "sha256-D7XuVKfaOnnyMfpZqWBauyQLsyD3xsrJ9BvFeVdmHTc=";
+  npmDepsHash = "sha256-DzQXumJO3co09aa6gDFR4Z2DQ5VshzzXi0NPilBiJ+4=";
   dontNpmBuild = true;
   doCheck = true;
   checkPhase = ''

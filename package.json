@@ -23,9 +23,6 @@
     "@tailwindcss/oxide": "4.3.3",
     "@tailwindcss/typography": "0.5.20"
   },
-  "bundleDependencies": [
-    "@tailwindcss/typography"
-  ],
   "engines": {
     "node": ">=20"
   },

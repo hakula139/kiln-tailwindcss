@@ -4,7 +4,7 @@ The npm package is versioned independently of kiln. Update the manifest and lock
 
 ```bash
 npm version X.Y.Z --no-git-tag-version
-NPM_FETCHER_VERSION=2 nix run --inputs-from . nixpkgs#prefetch-npm-deps -- package-lock.json
+nix run --inputs-from . nixpkgs#prefetch-npm-deps -- package-lock.json
 ```
 
 Update `npmDepsHash` in `default.nix`, run the development checks in the README, and commit the verified release preparation. Tag that commit and push the tag when the release is approved:
