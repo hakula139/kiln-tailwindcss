@@ -90,7 +90,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup Nix
-        uses: ./.github/actions/setup-nix
+        uses: hakula139/devkit/actions/setup-nix@v1.0.0-rc.3
 
       - name: Run flake check
         run: nix flake check
@@ -107,7 +107,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup Nix
-        uses: ./.github/actions/setup-nix
+        uses: hakula139/devkit/actions/setup-nix@v1.0.0-rc.3
 
       - name: Build and test package
         run: nix build .#kiln-tailwindcss --no-link --print-build-logs
