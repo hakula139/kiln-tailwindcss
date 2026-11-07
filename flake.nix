@@ -26,6 +26,7 @@
         dk = devkit.lib.mkLib pkgs;
         preCommit = dk.preCommit {
           src = ./.;
+          hooks.prettier.files = "\\.(m?js|json|jsonc|ya?ml)$";
           devHooks.eslint = {
             enable = true;
             entry = "./node_modules/.bin/eslint --fix";

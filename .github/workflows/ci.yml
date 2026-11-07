@@ -91,6 +91,10 @@ jobs:
 
       - name: Setup Nix
         uses: hakula139/devkit/actions/setup-nix@v1.0.0-rc.3
+        with:
+          extra_nix_config: |
+            sandbox = true
+            sandbox-fallback = false
 
       - name: Run flake check
         run: nix flake check
@@ -108,6 +112,22 @@ jobs:
 
       - name: Setup Nix
         uses: hakula139/devkit/actions/setup-nix@v1.0.0-rc.3
+        with:
+          extra_nix_config: |
+            sandbox = true
+            sandbox-fallback = false
 
       - name: Build and test package
         run: nix build .#kiln-tailwindcss --no-link --print-build-logs
+
+  result:
+    name: CI Result
+    if: ${{ !cancelled() }}
+    needs: [node-check, test-npm, flake-check, nix-build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+    steps:
+      - name: Check results
+        uses: hakula139/devkit/actions/ci-result@v1.0.0-rc.3
