@@ -9,4 +9,5 @@ nixpkgs
 numtide
 pkgs
 pname
+shfmt
 statix
