@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     flake-utils.url = "github:numtide/flake-utils";
     devkit = {
-      url = "github:hakula139/devkit/v1.0.0-rc.3";
+      url = "github:hakula139/devkit/88f619538cc3a79bf223e538504251264e02b4e9";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -26,7 +26,6 @@
         dk = devkit.lib.mkLib pkgs;
         preCommit = dk.preCommit {
           src = ./.;
-          hooks.prettier.files = "\\.(m?js|json|jsonc|ya?ml)$";
           devHooks.eslint = {
             enable = true;
             entry = "./node_modules/.bin/eslint --fix";

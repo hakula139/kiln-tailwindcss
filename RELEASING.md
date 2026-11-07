@@ -1,6 +1,6 @@
 # Releasing
 
-Follow the [shared release procedure](https://github.com/hakula139/devkit/blob/v1.0.0-rc.3/docs/releasing.md). Prepare a release PR, merge it after approval and passing checks, then separately obtain approval to tag its squash commit.
+Follow the [shared release procedure](https://github.com/hakula139/devkit/blob/88f619538cc3a79bf223e538504251264e02b4e9/docs/releasing.md). Prepare a release PR, merge it after approval and passing checks, then separately obtain approval to tag its squash commit.
 
 The npm package is versioned independently of kiln. Update its manifest and lockfile without creating an npm-generated tag:
 
