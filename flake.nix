@@ -26,6 +26,18 @@
         dk = devkit.lib.mkLib pkgs;
         preCommit = dk.preCommit {
           src = ./.;
+          hooks = {
+            actionlint.enable = true;
+            check-yaml.enable = true;
+            cspell.enable = true;
+            deadnix.enable = true;
+            dprint.enable = true;
+            markdownlint-cli2.enable = true;
+            nixfmt.enable = true;
+            prettier.enable = true;
+            sort-file-contents.enable = true;
+            statix.enable = true;
+          };
           devHooks.eslint = {
             enable = true;
             entry = "./node_modules/.bin/eslint --fix";
