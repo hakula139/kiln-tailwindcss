@@ -94,7 +94,10 @@ jobs:
         run: nix flake check
 
       - name: Build and test package
-        run: nix build .#kiln-tailwindcss --no-link --print-build-logs
+        run: |
+          nix build .#kiln-tailwindcss \
+            --no-link \
+            --print-build-logs
 
   result:
     name: CI Result
