@@ -20,7 +20,7 @@ Link changes in kiln or consuming themes and sites that need to land together. R
 List verification actually completed, with exact commands and meaningful output. Choose checks relevant to the change, such as:
 
 - [ ] `npm test`: command scenarios pass
-- [ ] `npm run format`, `npm run lint`, and `npm run spellcheck`: pass
+- [ ] `npm run lint`: passes
 - [ ] `nix flake check`: hooks pass
 - [ ] `nix build .#kiln-tailwindcss`: package and command tests pass
 - [ ] `npm pack --dry-run`: published files match the runtime contract

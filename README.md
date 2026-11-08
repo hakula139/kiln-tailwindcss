@@ -32,9 +32,7 @@ The command reads one UTF-8 stylesheet, resolves imports and plugins relative to
 nix develop
 npm ci
 npm test
-npm run format
 npm run lint
-npm run spellcheck
 nix flake check
 nix build .#kiln-tailwindcss
 ```

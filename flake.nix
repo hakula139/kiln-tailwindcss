@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-    flake-utils.url = "github:numtide/flake-utils";
     devkit = {
       url = "github:hakula139/devkit/v1";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,11 +12,10 @@
   outputs =
     {
       nixpkgs,
-      flake-utils,
       devkit,
       ...
     }:
-    flake-utils.lib.eachDefaultSystem (
+    devkit.lib.eachSystem devkit.lib.systems (
       system:
       let
         pkgs = import nixpkgs { inherit system; };
