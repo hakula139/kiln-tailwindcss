@@ -8,7 +8,19 @@ permissions:
   contents: read
 
 jobs:
+  tagged-ci:
+    name: Tagged CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Wait for CI
+        uses: hakula139/devkit/.github/actions/tagged-ci@v2
+
   publish:
+    needs: tagged-ci
     runs-on: ubuntu-latest
     permissions:
       contents: read

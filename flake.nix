@@ -3,9 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-    flake-utils.url = "github:numtide/flake-utils";
-    git-hooks-nix = {
-      url = "github:cachix/git-hooks.nix";
+    devkit = {
+      url = "github:hakula139/devkit/v2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -13,71 +12,39 @@
   outputs =
     {
       nixpkgs,
-      flake-utils,
-      git-hooks-nix,
+      devkit,
       ...
     }:
-    flake-utils.lib.eachDefaultSystem (
+    devkit.lib.eachSystem devkit.lib.systems (
       system:
       let
         pkgs = import nixpkgs { inherit system; };
         processor = pkgs.callPackage ./default.nix { nodejs = pkgs.nodejs_26; };
 
-        nodeHook =
-          name: command:
-          let
-            wrapper = pkgs.writeShellApplication {
-              inherit name;
-              runtimeInputs = [ pkgs.nodejs_26 ];
-              text = ''
-                if [ ! -d node_modules ]; then
-                  exit 0
-                fi
-                ./node_modules/.bin/${command} "$@"
-              '';
-            };
-          in
-          "${wrapper}/bin/${name}";
-
-        preCommitCheck = git-hooks-nix.lib.${system}.run {
+        dk = devkit.lib.mkLib pkgs;
+        preCommit = dk.preCommit {
           src = ./.;
           hooks = {
-            check-added-large-files.enable = true;
+            actionlint.enable = true;
             check-yaml.enable = true;
-            end-of-file-fixer.enable = true;
-            trim-trailing-whitespace = {
-              enable = true;
-              args = [ "--markdown-linebreak-ext=md" ];
-            };
-            nixfmt.enable = true;
-            statix.enable = true;
+            cspell.enable = true;
             deadnix.enable = true;
-            prettier = {
-              enable = true;
-              entry = nodeHook "prettier-write" "prettier --write --ignore-unknown";
-            };
-            dprint = {
-              enable = true;
-              entry = nodeHook "dprint-write" "dprint fmt";
-              files = "\\.md$";
-            };
-            eslint = {
-              enable = true;
-              entry = nodeHook "eslint" "eslint --fix";
-              files = "\\.mjs$";
-            };
-            markdownlint = {
-              enable = true;
-              entry = nodeHook "markdownlint" "markdownlint-cli2 --fix";
-              files = "\\.md$";
-            };
-            cspell = {
-              enable = true;
-              entry = nodeHook "cspell" "cspell --no-must-find-files --no-progress";
-              types = [ "text" ];
-            };
+            dprint.enable = true;
+            markdownlint-cli2.enable = true;
+            nixfmt.enable = true;
+            prettier.enable = true;
+            shellcheck.enable = true;
+            shfmt.enable = true;
+            sort-file-contents.enable = true;
+            statix.enable = true;
+          };
+          devHooks.eslint = {
+            enable = true;
+            entry = "./node_modules/.bin/eslint --fix";
+            files = "\\.mjs$";
           };
         };
+
       in
       {
         packages = {
@@ -85,13 +52,13 @@
           kiln-tailwindcss = processor;
         };
         devShells.default = pkgs.mkShell {
-          packages = preCommitCheck.enabledPackages ++ [
+          packages = [
             pkgs.nodejs_26
             pkgs.prefetch-npm-deps
           ];
-          inherit (preCommitCheck) shellHook;
+          inputsFrom = [ preCommit.shell ];
         };
-        checks.pre-commit = preCommitCheck;
+        checks.pre-commit = preCommit.check;
         formatter = pkgs.nixfmt-tree;
       }
     );

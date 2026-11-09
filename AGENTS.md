@@ -20,7 +20,7 @@ Add project spellings to `.cspell/words.txt`, one per line in alphabetical order
 
 ## Verification
 
-Run the development checks in [README.md](README.md). Node-side pre-commit hooks skip execution when `node_modules/` is absent, including in the Nix sandbox, so run the npm checks directly. Nix package builds run command tests before installation.
+Run the development checks in [README.md](README.md). Devkit's shared formatting and lint hooks run in `nix flake check`. ESLint additionally runs in the development shell after `npm ci`, and CI runs ESLint and command tests directly. Nix package builds run command tests before installation.
 
 ## Releases
 
