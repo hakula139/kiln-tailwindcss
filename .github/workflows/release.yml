@@ -17,7 +17,7 @@ jobs:
       contents: read
     steps:
       - name: Wait for CI
-        uses: hakula139/devkit/.github/actions/tagged-ci@v1
+        uses: hakula139/devkit/.github/actions/tagged-ci@v2
 
   publish:
     needs: tagged-ci
