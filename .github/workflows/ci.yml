@@ -19,10 +19,11 @@ jobs:
     secrets:
       CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-  pack:
-    name: Pack npm Package
+  package:
+    name: Package Check
     runs-on: ubuntu-latest
     timeout-minutes: 30
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -40,15 +41,16 @@ jobs:
           path: ${{ runner.temp }}/npm-package/*.tgz
           if-no-files-found: error
 
-  test-npm:
-    name: Test npm (Node ${{ matrix.node }})
-    needs: pack
+  consumer:
+    name: Consumer Check (Node ${{ matrix.node }})
+    needs: package
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         node: [20, 26]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -73,7 +75,7 @@ jobs:
     name: CI Result
     # A skipped required check passes, so the gate must run after failures too.
     if: ${{ !cancelled() }}
-    needs: [nix, pack, test-npm]
+    needs: [nix, package, consumer]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
