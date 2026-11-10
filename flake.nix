@@ -11,8 +11,8 @@
 
   outputs =
     {
-      nixpkgs,
       devkit,
+      nixpkgs,
       ...
     }:
     devkit.lib.eachSystem devkit.lib.systems (
@@ -45,8 +45,11 @@
         packages.default = processor;
         checks.package = processor;
         devShells.default = pkgs.mkShell {
+          name = "kiln-tailwindcss-dev";
           packages = builtins.attrValues dk.nodeToolchain;
-          inputsFrom = [ preCommit ];
+          inputsFrom = [
+            preCommit
+          ];
         };
         formatter = pkgs.nixfmt-tree;
       }

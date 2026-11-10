@@ -4,7 +4,7 @@ This repository owns the `@kiln-ssg/tailwindcss` npm package and the `kiln-tailw
 
 ## Dependencies and packaging
 
-Stylesheets import packages such as `tailwindcss` from the command's installation, where pnpm and Nix expose only direct dependencies, so pin every importable package in `dependencies`. A dependency change also updates the `pnpmDeps` hash in `default.nix`. A new runtime file goes in `package.json`'s `files` and in the source fileset and `installPhase` of `default.nix`.
+Stylesheets import packages such as `tailwindcss` from the command's installation, where pnpm's isolated layout exposes only direct dependencies, so pin every importable package in `dependencies`. Keep test sites outside the repository, where its `node_modules` cannot hide a missing dependency. A dependency change also updates the `pnpmDeps` hash in `default.nix`, and the Nix package installs the `files` and `bin` that `package.json` lists.
 
 ## Verification
 

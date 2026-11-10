@@ -9,6 +9,11 @@
 
 let
   package = lib.importJSON ./package.json;
+  runtimeFiles = package.files ++ [
+    "LICENSE"
+    "README.md"
+    "package.json"
+  ];
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "kiln-tailwindcss";
@@ -16,19 +21,27 @@ stdenv.mkDerivation (finalAttrs: {
 
   src = lib.fileset.toSource {
     root = ./.;
-    fileset = lib.fileset.unions [
-      ./compiler.mjs
-      ./package.json
-      ./pnpm-lock.yaml
-      ./pnpm-workspace.yaml
-      ./test
-    ];
+    fileset = lib.fileset.unions (
+      map (file: ./. + "/${file}") runtimeFiles
+      ++ [
+        ./pnpm-lock.yaml
+        ./pnpm-workspace.yaml
+        ./test
+      ]
+    );
   };
+
+  pnpmInstallFlags = [ "--prod" ];
   pnpmDeps = fetchPnpmDeps {
-    inherit (finalAttrs) pname version src;
+    inherit (finalAttrs)
+      pname
+      version
+      src
+      pnpmInstallFlags
+      ;
     inherit pnpm;
     fetcherVersion = 5;
-    hash = "sha256-1EoDSHJxVUhgsU8AuB0FKkHhd8coXTILcmMBD+5yI4I=";
+    hash = "sha256-eiiat9rwG5Ivp6Xrb2u7iSCz1qMAOJ00OD+V0Tb5TOA=";
   };
 
   nativeBuildInputs = [
@@ -48,18 +61,17 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    rm -r node_modules
-    pnpm install \
-      --offline \
-      --prod \
-      --frozen-lockfile \
-      --ignore-scripts
-
-    package=$out/lib/node_modules/${package.name}
-    install -D --mode=755 --target-directory="$package" compiler.mjs
-    cp -r package.json node_modules "$package"
-    mkdir $out/bin
-    ln -s "$package/compiler.mjs" $out/bin/kiln-tailwindcss
+    dest="$out/lib/node_modules/${package.name}"
+    mkdir -p "$dest" "$out/bin"
+    cp -r ${lib.escapeShellArgs runtimeFiles} node_modules "$dest"
+  ''
+  + lib.concatStrings (
+    lib.mapAttrsToList (name: file: ''
+      chmod +x "$dest/${file}"
+      ln -s "$dest/${file}" "$out/bin/${name}"
+    '') package.bin
+  )
+  + ''
 
     runHook postInstall
   '';

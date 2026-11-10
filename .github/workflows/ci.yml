@@ -31,9 +31,7 @@ jobs:
         uses: hakula139/devkit/.github/actions/setup-nix@v3
 
       - name: Pack package
-        run: |
-          nix develop -c pnpm pack \
-            --pack-destination "$RUNNER_TEMP/npm-package"
+        run: nix develop -c pnpm pack --pack-destination "$RUNNER_TEMP/npm-package"
 
       - name: Upload package
         uses: actions/upload-artifact@v7
