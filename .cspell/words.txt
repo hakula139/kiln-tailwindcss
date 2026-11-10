@@ -14,4 +14,3 @@ shellcheck
 shfmt
 statix
 stdenv
-worktrees
