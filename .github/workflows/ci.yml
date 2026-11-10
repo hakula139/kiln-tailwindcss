@@ -10,38 +10,32 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  group: ci-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
 
 jobs:
-  node-check:
-    name: Node Check
+  nix:
+    uses: hakula139/devkit/.github/workflows/nix.yml@v3
+    secrets:
+      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+  pack:
+    name: Pack npm Package
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: 26
-          cache: npm
+      - name: Set up Nix
+        uses: hakula139/devkit/.github/actions/setup-nix@v3
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Test command
-        run: npm test
-
-      - name: Pack npm package
+      - name: Pack package
         run: |
-          mkdir "$RUNNER_TEMP/npm-package"
-          npm pack --pack-destination "$RUNNER_TEMP/npm-package"
+          nix develop -c pnpm pack \
+            --pack-destination "$RUNNER_TEMP/npm-package"
 
-      - name: Upload npm package
+      - name: Upload package
         uses: actions/upload-artifact@v7
         with:
           name: npm-package
@@ -50,8 +44,9 @@ jobs:
 
   test-npm:
     name: Test npm (Node ${{ matrix.node }})
-    needs: node-check
+    needs: pack
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -65,7 +60,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Download npm package
+      - name: Download package
         uses: actions/download-artifact@v8
         with:
           name: npm-package
@@ -76,37 +71,15 @@ jobs:
           NPM_PACKAGE_DIRECTORY: ${{ runner.temp }}/npm-package
         run: node --test .github/scripts/npm-consumer.test.mjs
 
-  nix-build:
-    name: Nix Build (${{ matrix.runner }})
-    runs-on: ${{ matrix.runner }}
-    strategy:
-      fail-fast: false
-      matrix:
-        runner: [ubuntu-latest, macos-latest]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup Nix
-        uses: hakula139/devkit/.github/actions/setup-nix@v2
-
-      - name: Run flake check
-        run: nix flake check
-
-      - name: Build and test package
-        run: |
-          nix build .#kiln-tailwindcss \
-            --no-link \
-            --print-build-logs
-
   result:
     name: CI Result
+    # A skipped required check passes, so the gate must run after failures too.
     if: ${{ !cancelled() }}
-    needs: [node-check, test-npm, nix-build]
+    needs: [nix, pack, test-npm]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       actions: read
     steps:
       - name: Check results
-        uses: hakula139/devkit/.github/actions/ci-result@v2
+        uses: hakula139/devkit/.github/actions/ci-result@v3

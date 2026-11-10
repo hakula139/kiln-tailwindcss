@@ -1,35 +1,67 @@
 {
-  buildNpmPackage,
+  fetchPnpmDeps,
   lib,
   nodejs,
+  pnpm,
+  pnpmConfigHook,
+  stdenv,
 }:
 
 let
   package = lib.importJSON ./package.json;
 in
-buildNpmPackage {
+stdenv.mkDerivation (finalAttrs: {
   pname = "kiln-tailwindcss";
   inherit (package) version;
-  inherit nodejs;
 
   src = lib.fileset.toSource {
     root = ./.;
     fileset = lib.fileset.unions [
-      ./LICENSE
-      ./README.md
       ./compiler.mjs
       ./package.json
-      ./package-lock.json
+      ./pnpm-lock.yaml
+      ./pnpm-workspace.yaml
       ./test
     ];
   };
-  npmDepsHash = "sha256-HCDpP0QrMsQKYoTW0TIhjflG8hDJnwbaCPdxRjX/aKw=";
-  dontNpmBuild = true;
+  pnpmDeps = fetchPnpmDeps {
+    inherit (finalAttrs) pname version src;
+    inherit pnpm;
+    fetcherVersion = 5;
+    hash = "sha256-1EoDSHJxVUhgsU8AuB0FKkHhd8coXTILcmMBD+5yI4I=";
+  };
+
+  nativeBuildInputs = [
+    nodejs
+    pnpm
+    pnpmConfigHook
+  ];
+  buildInputs = [ nodejs ];
+
   doCheck = true;
   checkPhase = ''
     runHook preCheck
-    npm test
+    pnpm test
     runHook postCheck
+  '';
+
+  installPhase = ''
+    runHook preInstall
+
+    rm -r node_modules
+    pnpm install \
+      --offline \
+      --prod \
+      --frozen-lockfile \
+      --ignore-scripts
+
+    package=$out/lib/node_modules/${package.name}
+    install -D --mode=755 --target-directory="$package" compiler.mjs
+    cp -r package.json node_modules "$package"
+    mkdir $out/bin
+    ln -s "$package/compiler.mjs" $out/bin/kiln-tailwindcss
+
+    runHook postInstall
   '';
 
   meta = {
@@ -38,4 +70,4 @@ buildNpmPackage {
     license = lib.licenses.mit;
     mainProgram = "kiln-tailwindcss";
   };
-}
+})
