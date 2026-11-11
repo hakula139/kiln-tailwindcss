@@ -1,4 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>hakula139/devkit#v3"]
+  "extends": ["github>hakula139/devkit#v3"],
+  "lockFileMaintenance": {
+    "automerge": false
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["npm"],
+      "automerge": false
+    }
+  ]
 }
