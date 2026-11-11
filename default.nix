@@ -77,8 +77,7 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   meta = {
-    description = "Tailwind CSS compiler for kiln";
-    homepage = "https://github.com/hakula139/kiln-tailwindcss";
+    inherit (package) description homepage;
     license = lib.licenses.mit;
     mainProgram = "kiln-tailwindcss";
   };

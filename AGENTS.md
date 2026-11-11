@@ -10,7 +10,7 @@ Stylesheets import packages such as `tailwindcss` from the command's installatio
 
 ```bash
 nix develop -c run-hooks
-nix flake check
+nix flake check --all-systems
 ```
 
 `nix flake check` builds the package, which runs the command tests.

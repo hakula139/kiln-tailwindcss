@@ -1,5 +1,4 @@
 cachix
-deadnix
 devkit
 direnv
 fileset
@@ -12,5 +11,4 @@ pkgs
 pname
 shellcheck
 shfmt
-statix
 stdenv
