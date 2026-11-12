@@ -13,4 +13,6 @@ node_modules/
 # Assistant local state
 **/.agents/plans/
 **/.claude/agent-memory-local/
+**/.claude/plans/
 **/.claude/settings.local.json
+**/.claude/worktrees/

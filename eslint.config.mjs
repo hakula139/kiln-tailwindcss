@@ -1,10 +1,11 @@
 import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 
-export default [
-  js.configs.recommended,
+export default defineConfig([
   {
     files: ['**/*.mjs'],
+    extends: [js.configs.recommended],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -19,4 +20,7 @@ export default [
       'prefer-const': 'error',
     },
   },
-];
+  {
+    ignores: ['.agents/', '.claude/', '.direnv/', 'node_modules/'],
+  },
+]);

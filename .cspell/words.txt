@@ -12,3 +12,4 @@ pname
 shellcheck
 shfmt
 stdenv
+worktrees
