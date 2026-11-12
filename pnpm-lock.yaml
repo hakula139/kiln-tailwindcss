@@ -172,16 +172,16 @@ importers:
   .:
     dependencies:
       '@tailwindcss/node':
-        specifier: 4.3.5
+        specifier: ^4.3.5
         version: 4.3.5
       '@tailwindcss/oxide':
-        specifier: 4.3.5
+        specifier: ^4.3.5
         version: 4.3.5
       '@tailwindcss/typography':
-        specifier: 0.5.20
+        specifier: ^0.5.20
         version: 0.5.20(tailwindcss@4.3.5)
       tailwindcss:
-        specifier: 4.3.5
+        specifier: ^4.3.5
         version: 4.3.5
     devDependencies:
       '@eslint/js':

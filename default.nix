@@ -1,6 +1,6 @@
 {
-  fetchPnpmDeps,
   lib,
+  fetchPnpmDeps,
   nodejs,
   pnpm,
   pnpmConfigHook,
