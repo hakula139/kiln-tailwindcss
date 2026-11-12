@@ -1,18 +1,11 @@
 # Releasing
 
-Use the [release skill][release-skill] for preparation, notes curation, the release PR, approved tagging, and recovery. This document defines the kiln-tailwindcss release contract.
-
-The npm package is versioned independently of kiln. Update its manifest and lockfile without creating an npm-generated tag:
+Use the [release skill](https://github.com/hakula139/plugins/blob/main/plugins/hakula-workflow/skills/release/SKILL.md) for the shared procedure. The npm package is versioned independently of kiln. Bump the manifest without an npm-generated tag:
 
 ```bash
-npm version X.Y.Z --no-git-tag-version
-nix run --inputs-from . nixpkgs#prefetch-npm-deps -- package-lock.json
+pnpm version X.Y.Z --no-git-tag-version
 ```
 
-Update `npmDepsHash` in `default.nix` and run the development checks in the README. This package uses GitHub generated release notes.
+On the pushed tag, `release.yml` checks that the tag matches the package version, waits for CI on the tagged commit, and runs `pnpm publish --provenance` through npm's GitHub OIDC trusted publisher, with `latest` for stable versions and `next` for prereleases. It then creates the GitHub release with generated notes.
 
-The `release.yml` workflow verifies that the tag matches the package version, runs command tests, and publishes through npm's GitHub OIDC trusted publisher. Stable versions use `latest`, and prereleases use `next`. The GitHub release follows successful npm publication.
-
-Configure the trusted publisher for `@kiln-ssg/tailwindcss` to allow `hakula139/kiln-tailwindcss` through `release.yml`. npm versions are immutable. Fix an already published package with a new version.
-
-[release-skill]: https://github.com/hakula139/plugins/blob/main/plugins/hakula-workflow/skills/release/SKILL.md
+The trusted publisher for `@kiln-ssg/tailwindcss` allows `hakula139/kiln-tailwindcss` through `release.yml`, so renaming the workflow breaks publishing. npm versions are immutable, so fix a published version with a new one. Run npm-only commands such as `npm trust` outside the checkout, as [devkit's pnpm guide](https://github.com/hakula139/devkit/blob/v3/docs/hooks.md#declare-pnpm) explains.

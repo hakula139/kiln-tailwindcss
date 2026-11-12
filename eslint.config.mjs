@@ -19,7 +19,4 @@ export default [
       'prefer-const': 'error',
     },
   },
-  {
-    ignores: ['.agents/plans/', '.claude/', '.direnv/', 'node_modules/'],
-  },
 ];

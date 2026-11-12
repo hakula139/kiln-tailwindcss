@@ -1,31 +1,20 @@
 # AGENTS.md: kiln-tailwindcss
 
-This repository owns the `@kiln-ssg/tailwindcss` npm package and the `kiln-tailwindcss` command consumed by [kiln](https://github.com/hakula139/kiln).
-
-## Compiler contract
-
-The command accepts one UTF-8 stylesheet and emits compiled CSS on stdout. Keep diagnostics on stderr and compilation failures nonzero so kiln can capture the output and propagate failures. Imports and plugins must resolve from both the input stylesheet's directory and the processor's installed dependencies.
-
-Kiln supplies generated inputs containing shared stylesheet references and Tailwind source declarations. Verify changes against temporary site fixtures outside this repository so package-local dependencies do not hide resolution failures.
-
-## Tests
-
-Use Node's built-in test runner and exercise the command through child processes. Group scenarios by successful compilation, source and plugin variants, then failures. Assert emitted CSS and diagnostic behavior, and keep fixture and invocation helpers after the scenarios that use them.
+This repository owns the `@kiln-ssg/tailwindcss` npm package and the `kiln-tailwindcss` command consumed by [kiln](https://github.com/hakula139/kiln). The README's [command contract](README.md#command-contract) defines what kiln relies on.
 
 ## Dependencies and packaging
 
-Pin runtime dependencies in `package.json`. Refresh `package-lock.json` and `npmDepsHash` in `default.nix` together when dependencies change. Keep the npm `files` list and Nix source fileset aligned with runtime additions, and include command fixtures in the Nix source so package builds can run the tests.
-
-Add project spellings to `.cspell/words.txt`, one per line in alphabetical order.
+Stylesheets import packages such as `tailwindcss` from the command's installation, where pnpm's isolated layout exposes only direct dependencies, so pin every importable package in `dependencies`. Keep test sites outside the repository, where its `node_modules` cannot hide a missing dependency. A dependency change also updates the `pnpmDeps` hash in `default.nix`, and the Nix package installs the `files` and `bin` that `package.json` lists.
 
 ## Verification
 
-Run the development checks in [README.md](README.md). Devkit's shared formatting and lint hooks run in `nix flake check`. ESLint additionally runs in the development shell after `npm ci`, and CI runs ESLint and command tests directly. Nix package builds run command tests before installation.
+```bash
+nix develop -c run-hooks
+nix flake check --all-systems
+```
+
+`nix flake check` builds the package, which runs the command tests.
 
 ## Releases
 
-The package is versioned independently of kiln. Follow [RELEASING.md](RELEASING.md) for dependency hashes, release tags, and trusted publisher setup.
-
-## Pull requests
-
-Assign pull requests to `hakula139`. Use `enhancement` for features and `bug` for fixes.
+Follow [RELEASING.md](RELEASING.md).
