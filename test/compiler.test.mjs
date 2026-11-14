@@ -148,7 +148,8 @@ describe('kiln-tailwindcss', () => {
 
       await assert.rejects(compile(root), (error) => {
         assert.equal(error.code, 1);
-        assert.match(error.stderr, /nonexistent-example-utility/);
+        assert.equal(error.stdout, '');
+        assert.match(error.stderr, /^Error: .*nonexistent-example-utility/);
         return true;
       });
     });
