@@ -45,7 +45,7 @@ stdenv.mkDerivation (finalAttrs: {
     prePnpmInstall = ''
       pnpm config set package-import-method copy
     '';
-    hash = "sha256-rZ2ykSetPoPphV9AYnt0Ld+yHLyXQjbBp9MAVBbcjrY=";
+    hash = "sha256-R3ZLn2iBOrb7/MZcTILsXNTGk/qPhlaaZ0zJHHhtMQc=";
   };
 
   nativeBuildInputs = [
