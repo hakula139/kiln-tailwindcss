@@ -7,11 +7,7 @@ export default defineConfig([
     files: ['**/*.mjs'],
     extends: [js.configs.recommended],
     languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      globals: {
-        ...globals.node,
-      },
+      globals: globals.node,
     },
     rules: {
       'curly': ['error', 'all'],
@@ -21,6 +17,6 @@ export default defineConfig([
     },
   },
   {
-    ignores: ['.agents/', '.claude/', '.direnv/', 'node_modules/'],
+    ignores: ['.agents/', '.claude/', '.direnv/'],
   },
 ]);
