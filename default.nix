@@ -69,15 +69,12 @@ stdenv.mkDerivation (finalAttrs: {
     mkdir -p "$dest" "$out/bin"
     cp -r ${lib.escapeShellArgs runtimeFiles} node_modules "$dest"
     rm -r "$dest/node_modules/.pnpm-config"
-  ''
-  + lib.concatStrings (
-    lib.mapAttrsToList (name: file: ''
-      chmod +x "$dest/${file}"
-      ln -s "$dest/${file}" "$out/bin/${name}"
-    '') package.bin
-  )
-  + ''
-
+    ${lib.concatStrings (
+      lib.mapAttrsToList (name: file: ''
+        chmod +x "$dest/${file}"
+        ln -s "$dest/${file}" "$out/bin/${name}"
+      '') package.bin
+    )}
     runHook postInstall
   '';
 
