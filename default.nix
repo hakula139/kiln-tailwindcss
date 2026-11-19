@@ -41,10 +41,6 @@ stdenv.mkDerivation (finalAttrs: {
       ;
     inherit pnpm;
     fetcherVersion = 5;
-    # Copies keep config dependencies' archive entries consistent across filesystems.
-    prePnpmInstall = ''
-      pnpm config set package-import-method copy
-    '';
     hash = "sha256-vvsrlgnKtEzEzTJvuUl52ri3o5E4/RRgVxJEQBMk7MM=";
   };
 
@@ -68,7 +64,6 @@ stdenv.mkDerivation (finalAttrs: {
     dest="$out/lib/node_modules/${package.name}"
     mkdir -p "$dest" "$out/bin"
     cp -r ${lib.escapeShellArgs runtimeFiles} node_modules "$dest"
-    rm -r "$dest/node_modules/.pnpm-config"
     ${lib.concatStrings (
       lib.mapAttrsToList (name: file: ''
         chmod +x "$dest/${file}"
