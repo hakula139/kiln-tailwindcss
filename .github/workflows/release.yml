@@ -32,7 +32,7 @@ jobs:
           fi
 
       - name: Wait for CI on the tagged commit
-        uses: hakula139/devkit/.github/actions/tagged-ci@v3
+        uses: hakulab/devkit/.github/actions/tagged-ci@v3
 
   publish:
     name: Publish npm Package
@@ -48,7 +48,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Set up Nix
-        uses: hakula139/devkit/.github/actions/setup-nix@v3
+        uses: hakulab/devkit/.github/actions/setup-nix@v3
 
       # A tag checkout is on no branch, which pnpm's git checks reject.
       - name: Publish package

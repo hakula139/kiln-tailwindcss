@@ -3,6 +3,7 @@ devkit
 direnv
 fileset
 hakula
+hakulab
 minimatch
 nixfmt
 nixos
