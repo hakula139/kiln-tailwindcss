@@ -1,6 +1,6 @@
 # @kiln-ssg/tailwindcss
 
-The Tailwind CSS processor for [kiln](https://github.com/hakula139/kiln). It includes Tailwind CSS and its typography plugin, exposing the `kiln-tailwindcss` command that kiln invokes for site and page stylesheets.
+The Tailwind CSS processor for [kiln](https://github.com/hakulab/kiln). It includes Tailwind CSS and its typography plugin, exposing the `kiln-tailwindcss` command that kiln invokes for site and page stylesheets.
 
 ## Installation
 
@@ -13,7 +13,7 @@ npm install -g @kiln-ssg/tailwindcss
 Nix users can install the package from this repository:
 
 ```bash
-nix profile add github:hakula139/kiln-tailwindcss
+nix profile add github:hakulab/kiln-tailwindcss
 ```
 
 Kiln's Nix package supplies this processor automatically. Set `[css] processor = "tailwind"` in the site or theme configuration to select it.
